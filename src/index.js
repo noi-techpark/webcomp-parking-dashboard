@@ -50,7 +50,7 @@ class ParkingDashboard extends HTMLElement {
     }
 
     name(parking) {
-        return parking.smetadata.standard_name ? parking.smetadata.standard_name : parking.sname;
+        return parking.smetadata.standard_name ? parking.smetadata.standard_name.replace("Parcheggio ", "") : parking.sname;
     }
 
     badgeColor(parking) {
@@ -90,6 +90,7 @@ class ParkingDashboard extends HTMLElement {
                     flex-direction: column;
                     color : white;
                     width: 130px;
+                    flex-shrink: 0;
                     font-family: sans-serif;
                     justify-content: center;
                     border-radius: 10px;
