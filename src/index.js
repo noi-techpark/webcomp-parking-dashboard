@@ -154,7 +154,6 @@ class ParkingDashboard extends HTMLElement {
                     background-color : #bfbfbf;
                 }
             </style>
-            <h1>Parking Dashboard</h1>
         `;
 
 
