@@ -51,7 +51,8 @@ class ParkingDashboard extends HTMLElement {
     }
 
     name(parking) {
-        return parking.smetadata.standard_name ? parking.smetadata.standard_name.replace("Parcheggio ", "") : parking.sname;
+        return parking.sname;
+        // return parking.smetadata.standard_name ? parking.smetadata.standard_name.replace("Parcheggio ", "") : parking.sname;
     }
 
     badgeColor(parking) {
@@ -61,9 +62,9 @@ class ParkingDashboard extends HTMLElement {
         if (parkingDate < referenceDate)
             return 'gray';
         const percentage = Math.floor(parking.mvalue / parking.smetadata.capacity * 100);
-        if (percentage >= 80)
+        if (percentage >= 90)
             return 'red';
-        if (percentage >= 40)
+        if (percentage >= 50)
             return 'orange';
         return 'green';
     }
@@ -82,19 +83,23 @@ class ParkingDashboard extends HTMLElement {
                     margin: 10px;
                     margin-bottom: 20px;
                 }
+                .container{
+                    display: flex;
+                    flex-wrap: wrap;
+                }
                 .card {
                     font-family: 'Source Sans Pro',sans-serif;
                     display: flex;
                     margin: 10px;
                     padding: 5px;
                     border-radius: 20px;
-                    height: 100px;
+                    height: 150px;
                 }
                 .badge{
                     display: flex;
                     flex-direction: column;
                     color : white;
-                    width: 110px;
+                    width: 150px;
                     flex-shrink: 0;
                     font-family: sans-serif;
                     justify-content: center;
@@ -102,13 +107,13 @@ class ParkingDashboard extends HTMLElement {
                 }
                 .percentage{
                     font-weight: 600;
-                    font-size: 32px;
+                    font-size: 50px;
                     text-align: center;
                     width: 100%;
                 }
                 .capacity{
                     font-weight: 600;
-                    font-size: 18px;
+                    font-size: 24px;
                     text-align: center;
                     width: 100%;
                 }
@@ -117,15 +122,21 @@ class ParkingDashboard extends HTMLElement {
                     flex-direction: column;
                     flex-wrap: wrap;
                     justify-content: space-between;
-                    height: 90px;
+                    height: 140px;
+                    width: 250px;
                     padding: 5px;
                     margin-left: 15px;
                     font-size: 22px;
                     font-family: 'Source Sans Pro',sans-serif;
                 }
+                @media only screen and (max-width: 932px) {
+                    .detail {
+                        width: 200px;
+                    }
+                }
                 .name {
                     font-weight: 600;
-                    font-size: 28px;
+                    font-size: 24px;
                 }
 
                 .red {
@@ -144,8 +155,11 @@ class ParkingDashboard extends HTMLElement {
             <h1>Parking Dashboard</h1>
         `;
 
+
+        let cards = "";
+
         for (let parking of this.parkings) {
-            this.shadow.innerHTML += `
+            cards += `
                 <div class="card">
                     <div class="badge ${this.badgeColor(parking)}">
                         <div class="percentage">${Math.floor(parking.mvalue / parking.smetadata.capacity * 100)}%</div>
@@ -158,6 +172,13 @@ class ParkingDashboard extends HTMLElement {
                 </div>
         `;
         }
+
+        this.shadow.innerHTML += `
+            <div class="container">
+            ${cards}
+            </div>
+        `;
+
     }
 }
 
