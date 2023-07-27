@@ -76,11 +76,11 @@ class ParkingDashboard extends HTMLElement {
                     color: black;
                     font-size: ${this.fontSize}px;
                     font-family: 'Source Sans Pro',sans-serif;
-                    margin: 20px;
+                    margin: 10px;
                 }
                 .card {
                     display: flex;
-                    margin: 20px;
+                    margin: 10px;
                     padding: 5px;
                     border-radius: 20px;
                     height: 100px;
@@ -89,7 +89,7 @@ class ParkingDashboard extends HTMLElement {
                     display: flex;
                     flex-direction: column;
                     color : white;
-                    width: 130px;
+                    width: 110px;
                     flex-shrink: 0;
                     font-family: sans-serif;
                     justify-content: center;
@@ -108,9 +108,16 @@ class ParkingDashboard extends HTMLElement {
                     width: 100%;
                 }
                 .detail {
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                    height: 90px;
+                    padding: 5px;
                     margin-left: 15px;
-                    font-size: 24px;
+                    font-size: 22px;
                 }
+
                 .red {
                     background-color : #ff4d4d;
                 }
@@ -132,8 +139,8 @@ class ParkingDashboard extends HTMLElement {
                         <div class="capacity">${parking.mvalue} / ${parking.smetadata.capacity}</div>
                     </div>
                     <div class="detail">
-                        <strong>${this.name(parking)}</strong>
-                        <p>${this.dateFormat(parking)}</p>
+                        <div><strong>${this.name(parking)}</strong></div>
+                        <div>${this.dateFormat(parking)}</div>
                     </div>
                 </div>
         `;
