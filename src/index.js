@@ -106,14 +106,14 @@ class ParkingDashboard extends HTMLElement {
                     border-radius: 10px;
                 }
                 .percentage{
-                    text-shadow: 0px 0px 5px #7b7b7b;
+                    text-shadow: 0px 0px 5px #00000073;
                     font-weight: 600;
                     font-size: 50px;
                     text-align: center;
                     width: 100%;
                 }
                 .capacity{
-                    text-shadow: 0px 0px 3px #7b7b7b;
+                    text-shadow: 0px 0px 3px #00000073;
                     font-weight: 600;
                     font-size: 24px;
                     text-align: center;
