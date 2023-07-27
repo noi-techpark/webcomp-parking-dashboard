@@ -62,8 +62,10 @@ class ParkingDashboard extends HTMLElement {
             return 'gray';
         const percentage = Math.floor(parking.mvalue / parking.smetadata.capacity * 100);
         if (percentage >= 80)
-            return 'red'
-        return 'green'
+            return 'red';
+        if (percentage >= 40)
+            return 'orange';
+        return 'green';
     }
 
     connectedCallback() {
@@ -76,7 +78,6 @@ class ParkingDashboard extends HTMLElement {
             <style>
                 h1 {
                     color: black;
-                    font-size: ${this.fontSize}px;
                     font-family: 'Source Sans Pro',sans-serif;
                     margin: 10px;
                     margin-bottom: 20px;
@@ -129,6 +130,9 @@ class ParkingDashboard extends HTMLElement {
 
                 .red {
                     background-color : #ff4d4d;
+                }
+                .orange {
+                    background-color : #FAC903;
                 }
                 .green {
                     background-color : #5cd65c;
