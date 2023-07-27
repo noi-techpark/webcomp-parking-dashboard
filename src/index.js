@@ -13,6 +13,7 @@ class ParkingDashboard extends HTMLElement {
             { mode: "open" }    // Set mode to "open", to have access to
             // the shadow dom from inside this component
         );
+
     }
 
     get parkings() {
@@ -70,6 +71,7 @@ class ParkingDashboard extends HTMLElement {
     }
 
     render() {
+        console.log("render");
         this.shadow.innerHTML = `
             <style>
                 h1 {
@@ -77,8 +79,10 @@ class ParkingDashboard extends HTMLElement {
                     font-size: ${this.fontSize}px;
                     font-family: 'Source Sans Pro',sans-serif;
                     margin: 10px;
+                    margin-bottom: 20px;
                 }
                 .card {
+                    font-family: 'Source Sans Pro',sans-serif;
                     display: flex;
                     margin: 10px;
                     padding: 5px;
@@ -116,6 +120,11 @@ class ParkingDashboard extends HTMLElement {
                     padding: 5px;
                     margin-left: 15px;
                     font-size: 22px;
+                    font-family: 'Source Sans Pro',sans-serif;
+                }
+                .name {
+                    font-weight: 600;
+                    font-size: 28px;
                 }
 
                 .red {
@@ -128,7 +137,7 @@ class ParkingDashboard extends HTMLElement {
                     background-color : #bfbfbf;
                 }
             </style>
-            <h1>Parking dashboard</h1>
+            <h1>Parking Dashboard</h1>
         `;
 
         for (let parking of this.parkings) {
@@ -139,7 +148,7 @@ class ParkingDashboard extends HTMLElement {
                         <div class="capacity">${parking.mvalue} / ${parking.smetadata.capacity}</div>
                     </div>
                     <div class="detail">
-                        <div><strong>${this.name(parking)}</strong></div>
+                        <div class="name">${this.name(parking)}</div>
                         <div>${this.dateFormat(parking)}</div>
                     </div>
                 </div>
