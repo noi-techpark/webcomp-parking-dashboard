@@ -19,15 +19,13 @@ class ParkingDashboard extends HTMLElement {
         let parkingLots = this.getAttribute("parkings");
 
         // default value
-        parkingLots = parkingLots != null ? parkingLots: "108,103,104,116"; 
+        parkingLots = parkingLots != null ? parkingLots : "108,103,104,116";
         // split string
         parkingLots = parkingLots.split(",");
-        console.log(parkingLots);
-
 
         // https://mobility.api.opendatahub.com/v2/flat,node/ParkingStation/occupied/latest?where=scode.in.(%22108%22,%22103%22,%22104%22,%22116%22)
         const api = "https://mobility.api.opendatahub.com";
-        
+
         const xhttp = new XMLHttpRequest();
         const searchString = "scode.in.(" + parkingLots
             .map(e => `"${encodeURIComponent(e)}"`)
@@ -37,12 +35,15 @@ class ParkingDashboard extends HTMLElement {
         xhttp.send();
         const json = JSON.parse(xhttp.response);
 
-        console.log(json);
         return json.data;
     }
 
-    get visits() {
-        return value;
+    dateFormat(parking) {
+        if (!parking.mvalidtime) return ''
+        const date = new Date(parking.mvalidtime)
+        return `${date.getHours()}:${String('0' + date.getMinutes()).slice(
+            -2
+        )}, ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
     }
 
     connectedCallback() {
@@ -61,10 +62,11 @@ class ParkingDashboard extends HTMLElement {
             <h1>Parking dashboard</h1>
         `;
 
-        for(let parking of this.parkings){
+        for (let parking of this.parkings) {
             this.shadow.innerHTML += `
                 <h2>${parking.sname}</h2>
-                <p>${parking.mvalue}/${parking.smetadata.capacity} ${Math.floor(parking.mvalue/parking.smetadata.capacity * 100)}% ${parking.mvalidtime}</p>  
+                <p>${Math.floor(parking.mvalue / parking.smetadata.capacity * 100)}% - ${parking.mvalue}/${parking.smetadata.capacity}<br/>
+                ${this.dateFormat(parking)}</p>    
             `;
         }
     }
