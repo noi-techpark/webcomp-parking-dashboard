@@ -35,6 +35,9 @@ class ParkingDashboard extends HTMLElement {
         xhttp.send();
         const json = JSON.parse(xhttp.response);
 
+        json.data.sort((a, b) => this.name(a) > this.name(b));
+
+
         return json.data;
     }
 
@@ -73,6 +76,7 @@ class ParkingDashboard extends HTMLElement {
                     color: black;
                     font-size: ${this.fontSize}px;
                     font-family: 'Source Sans Pro',sans-serif;
+                    margin: 20px;
                 }
                 .card {
                     display: flex;
@@ -85,7 +89,7 @@ class ParkingDashboard extends HTMLElement {
                     display: flex;
                     flex-direction: column;
                     color : white;
-                    width: 150px;
+                    width: 130px;
                     font-family: sans-serif;
                     justify-content: center;
                     border-radius: 10px;
@@ -118,14 +122,6 @@ class ParkingDashboard extends HTMLElement {
             </style>
             <h1>Parking dashboard</h1>
         `;
-
-        // for (let parking of this.parkings) {
-        //     this.shadow.innerHTML += `
-        //         <h2>${this.name(parking)}</h2 >
-        //     <p>${Math.floor(parking.mvalue / parking.smetadata.capacity * 100)}% - ${parking.mvalue}/${parking.smetadata.capacity}<br />
-        //         ${this.dateFormat(parking)}</p>
-        // `;
-        // }
 
         for (let parking of this.parkings) {
             this.shadow.innerHTML += `
