@@ -46,6 +46,10 @@ class ParkingDashboard extends HTMLElement {
         )}, ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
     }
 
+    name(parking) {
+        return parking.smetadata.standard_name ? parking.smetadata.standard_name : parking.sname; 
+    }
+
     connectedCallback() {
         this.render();
     }
@@ -64,10 +68,10 @@ class ParkingDashboard extends HTMLElement {
 
         for (let parking of this.parkings) {
             this.shadow.innerHTML += `
-                <h2>${parking.sname}</h2>
-                <p>${Math.floor(parking.mvalue / parking.smetadata.capacity * 100)}% - ${parking.mvalue}/${parking.smetadata.capacity}<br/>
-                ${this.dateFormat(parking)}</p>    
-            `;
+                <h2>${this.name(parking)}</h2 >
+            <p>${Math.floor(parking.mvalue / parking.smetadata.capacity * 100)}% - ${parking.mvalue}/${parking.smetadata.capacity}<br />
+                ${this.dateFormat(parking)}</p>
+        `;
         }
     }
 }
