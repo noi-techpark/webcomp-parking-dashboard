@@ -47,7 +47,19 @@ class ParkingDashboard extends HTMLElement {
     }
 
     name(parking) {
-        return parking.smetadata.standard_name ? parking.smetadata.standard_name : parking.sname; 
+        return parking.smetadata.standard_name ? parking.smetadata.standard_name : parking.sname;
+    }
+
+    badgeColor(parking) {
+        const parkingDate = new Date(parking.mvalidtime);
+        const referenceDate = new Date();
+        referenceDate.setHours(referenceDate.getHours() - 1);
+        if (parkingDate < referenceDate)
+            return 'gray';
+        const percentage = Math.floor(parking.mvalue / parking.smetadata.capacity * 100);
+        if (percentage >= 80)
+            return 'red'
+        return 'green'
     }
 
     connectedCallback() {
@@ -62,19 +74,66 @@ class ParkingDashboard extends HTMLElement {
                     font-size: ${this.fontSize}px;
                     font-family: 'Source Sans Pro',sans-serif;
                 }
+                .card {
+                    display: flex;
+                    margin: 20px;
+                    padding: 5px;
+                    border-radius: 20px;
+                    height: 100px;
+                }
+                .badge{
+                    display: flex;
+                    color : white;
+                    width: 150px;
+                    font-size: 24px;
+                    font-family: sans-serif;
+                    align-items: center;
+                    border-radius: 10px;
+                }
+                .badge-text{
+                    text-align: center;
+                    width: 100%;
+                }
+                .detail {
+                    margin-left: 15px;
+                    font-size: 24px;
+                }
+                .red {
+                    background-color : #ff4d4d;
+                }
+                .green {
+                    background-color : #5cd65c;
+                }
+                .gray {
+                    background-color : #bfbfbf;
+                }
             </style>
             <h1>Parking dashboard</h1>
         `;
 
+        // for (let parking of this.parkings) {
+        //     this.shadow.innerHTML += `
+        //         <h2>${this.name(parking)}</h2 >
+        //     <p>${Math.floor(parking.mvalue / parking.smetadata.capacity * 100)}% - ${parking.mvalue}/${parking.smetadata.capacity}<br />
+        //         ${this.dateFormat(parking)}</p>
+        // `;
+        // }
+
         for (let parking of this.parkings) {
             this.shadow.innerHTML += `
-                <h2>${this.name(parking)}</h2 >
-            <p>${Math.floor(parking.mvalue / parking.smetadata.capacity * 100)}% - ${parking.mvalue}/${parking.smetadata.capacity}<br />
-                ${this.dateFormat(parking)}</p>
+                <div class="card">
+                    <div class="badge ${this.badgeColor(parking)}">
+                        <strong class="badge-text">${Math.floor(parking.mvalue / parking.smetadata.capacity * 100)}%<br>
+                        ${parking.mvalue}/${parking.smetadata.capacity}</strong>
+                    </div>
+                    <div class="detail">
+                        <strong>${this.name(parking)}</strong>
+                        <p>${this.dateFormat(parking)}</p>
+                    </div>
+                </div>
         `;
         }
     }
 }
 
-// Register our first Custom Element named <hello-world>
 customElements.define('parking-dashboard', ParkingDashboard);
