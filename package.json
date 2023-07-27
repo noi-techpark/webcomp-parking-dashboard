@@ -1,5 +1,5 @@
 {
-  "name": "webcomp-boilerplate-helloworld",
+  "name": "webcomp-parking-dashboard",
   "private": true,
   "scripts": {
     "build": "webpack --config webpack.prod.js",

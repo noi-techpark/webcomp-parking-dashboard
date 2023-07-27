@@ -8,7 +8,7 @@ module.exports = {
   mode: 'development',
   entry: './src/index.js',
   output: {
-    filename: 'webcomp-boilerplate.js',
+    filename: 'webcomp-parking-dashboard.js',
     clean: true
   },
   devServer: {
