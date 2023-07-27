@@ -83,14 +83,22 @@ class ParkingDashboard extends HTMLElement {
                 }
                 .badge{
                     display: flex;
+                    flex-direction: column;
                     color : white;
                     width: 150px;
-                    font-size: 24px;
                     font-family: sans-serif;
-                    align-items: center;
+                    justify-content: center;
                     border-radius: 10px;
                 }
-                .badge-text{
+                .percentage{
+                    font-weight: 600;
+                    font-size: 32px;
+                    text-align: center;
+                    width: 100%;
+                }
+                .capacity{
+                    font-weight: 600;
+                    font-size: 18px;
                     text-align: center;
                     width: 100%;
                 }
@@ -123,8 +131,8 @@ class ParkingDashboard extends HTMLElement {
             this.shadow.innerHTML += `
                 <div class="card">
                     <div class="badge ${this.badgeColor(parking)}">
-                        <strong class="badge-text">${Math.floor(parking.mvalue / parking.smetadata.capacity * 100)}%<br>
-                        ${parking.mvalue}/${parking.smetadata.capacity}</strong>
+                        <div class="percentage">${Math.floor(parking.mvalue / parking.smetadata.capacity * 100)}%</div>
+                        <div class="capacity">${parking.mvalue} / ${parking.smetadata.capacity}</div>
                     </div>
                     <div class="detail">
                         <strong>${this.name(parking)}</strong>
