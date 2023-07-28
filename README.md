@@ -47,7 +47,7 @@ Include the webcompscript file `dist/webcomp-parking-dashboard.min.js` in your H
 
 #### parkings
 
-Comma separated scode list lots taken from https://mobility.api.opendatahub.com/v2/flat,node/ParkingStation?select=sname,scode
+Comma separated scode list taken from https://mobility.api.opendatahub.com/v2/flat,node/ParkingStation?select=sname,scode
 
 Type: string
 Default: "108,103,104,116"
