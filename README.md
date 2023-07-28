@@ -11,52 +11,176 @@ Simple webcomponent showing the real time avaiability for specific parking lots 
 
 **Table of Contents**
 - [Parking dashboard webcomponent](#parking-dashboard-webcomponent)
-  - [Prerequisites](#prerequisites)
-  - [Installing Docker](#installing-docker)
-    - [The docker containers](#the-docker-containers)
-      - [START:](#start)
-    - [License](#license)
+  - [Usage](#usage)
+    - [Attributes](#attributes)
+      - [parkings](#parkings)
+  - [Getting started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Source code](#source-code)
+    - [Dependencies](#dependencies)
+    - [Build](#build)
+  - [Tests and linting](#tests-and-linting)
+  - [Deployment](#deployment)
+  - [Run with docker](#run-with-docker)
+    - [Installation](#installation)
+    - [Start the docker containers](#start-the-docker-containers)
+    - [Publish a new version of your webcomponent](#publish-a-new-version-of-your-webcomponent)
+    - [Stop the docker containers](#stop-the-docker-containers)
+    - [Delete your webcomponents from the store](#delete-your-webcomponents-from-the-store)
+  - [Information](#information)
     - [Support](#support)
+    - [Contributing](#contributing)
+    - [Documentation](#documentation)
+    - [Boilerplate](#boilerplate)
+    - [License](#license)
     - [REUSE](#reuse)
 
-## Prerequisites
-To build the project, the following must have been installed in your local machine:
-- Node 20
-- [Docker]
+## Usage
 
-## Installing Docker
-[Video guide: What is Docker?](https://vimeo.com/734001110) <br>
-Now that you have the single js file created by the webpack you can use docker to run the file and see the resulting webcomp on docker. But first you'll have to install it.<br>
+Include the webcompscript file `dist/webcomp-parking-dashboard.min.js` in your HTML and define the web component like this:
+
+```html
+<parking-dashboard parkings="108,103"></parking-dashboard>
+```
+
+### Attributes
+
+#### parkings
+
+Comma separated scode list lots taken from https://mobility.api.opendatahub.com/v2/flat,node/ParkingStation?select=sname,scode
+
+Type: string
+Default: "108,103,104,116"
+
+## Getting started
+
+These instructions will get you a copy of the project up and running
+on your local machine for development and testing purposes.
+
+### Prerequisites
+
+To build the project, the following prerequisites must be met:
+
+- Node 20
+
+For a ready to use Docker environment with all prerequisites already installed and prepared, you can check out the [Docker environment](#docker-environment) section.
+
+### Source code
+
+Get a copy of the repository:
+
+```bash
+git clone https://github.com/noi-techpark/webcomp-parking-dashboard.git
+```
+
+Change directory:
+
+```bash
+cd webcomp-parking-dashboard/
+```
+
+### Dependencies
+
+Download all dependencies:
+
+```bash
+npm install
+```
+
+### Build
+
+Build and start the project:
+
+```bash
+npm run start
+```
+
+The application will be served and can be accessed at [http://localhost:8080](http://localhost:8080).
+
+## Tests and linting
+
+The tests and the linting can be executed with the following commands:
+
+```bash
+npm run test
+npm run lint
+```
+
+## Deployment
+
+To create the distributable files, execute the following command:
+
+```bash
+npm run build
+```
+
+## Run with docker
+
+If you want to test the webcomponent on a local instance of the [webcomponent store](https://webcomponents.opendatahub.com/) to make sure that it will run correctly also on the real store.
+You can also access the webcomponent running in a simple separated docker container outside of the store.
+
+If you have already developed your webcomponent and now want to test it on a local instance of the store, just copy `.env.example`, `docker-compose.yml`, `wcs-manifest.json` and `infrastructure/docker` into your root folder. Adjust your `package.json` and `wcs-manifest.json` files as described on the top of this readme. Then follow the instructions below.
+
+For accessing the webcomponent in a separated docker in the browser you will need a server (e.g. webpack dev-server) that is hosting a page which includes the webcomponent tag, as well as the script defining it. This page needs to be hosted on port 8080 as specified in your docker-compose file.
+
+### Installation
+
 Install [Docker](https://docs.docker.com/install/) (with Docker Compose) locally on your machine.
 
-### The docker containers
-In the file `docker-compose.yml` you can see all the containers that will open on docker:<br>
-The first one called: `app` is the one that will show your webcomponent, all the other below are the necessary container for the open data hub Webcomponent store.
-These containers are there for the last step of testing if your new webcomp will be visible in the store.<br>
-#### START:
+### Start the docker containers
 - Create a .env file: <br>
   `cp .env.example .env`
 - [Optional] Adjust port numbers in .env if they have conflicts with services already running on your machine
 - Start the store with: <br>
   `docker-compose up -d`
-- Update the docker using the scripts commands of the webpack<br>
-ex :  `npm run build`
-    > This command in our example will re-bundle your files and update the view on docker
 - Wait until the containers are running. You can check the current state with: <br>
   `docker-compose logs --tail 500 -f`
-- Access webcomponent running in separated docker in your browser on: <br>
-  `localhost:8998`
 - Access the store in your browser on: <br>
   `localhost:8999`
+- Access webcomponent running in separated docker in your browser on: <br>
+  `localhost:8998`
 
-Note: If you only want to start the webcomponent in the separated docker container without the webcomponent store, simply run `docker-compose up app -d`
+### Publish a new version of your webcomponent
+- Increase version number WC_VERSION in your .env file
+- Then run: `docker-compose up wcstore-cli`
+
+### Stop the docker containers
+- `docker-compose stop`
+
+### Delete your webcomponents from the store
+- `[sudo] rm -f workspace`
+- `docker-compose rm -f -v postgres`
 
 
-### License
-image: "wcs-logo.png" is under the CCO License (public domain)
+## Information
 
 ### Support
+
 For support, please contact [help@opendatahub.com](mailto:help@opendatahub.com).
+
+### Contributing
+
+If you'd like to contribute, please follow the following instructions:
+
+- Fork the repository.
+- Checkout a topic branch from the `main` branch.
+- Make sure the tests are passing.
+- Create a pull request against the `main` branch.
+
+A more detailed description have a look at our [Getting Started
+Guide](https://github.com/noi-techpark/odh-docs/wiki/Contributor-Guidelines:-Getting-started).
+
+### Documentation
+
+More documentation can be found at [https://docs.opendatahub.com](https://docs.opendatahub.com).
+
+### Boilerplate
+
+The project uses this boilerplate: [https://github.com/noi-techpark/webcomp-boilerplate](https://github.com/noi-techpark/webcomp-boilerplate).
+
+### License
+
+The code in this project is licensed under the GNU AFFERO GENERAL PUBLIC LICENSE Version 3 license. See the [LICENSE.md](LICENSE.md) file for more information.
 
 ### REUSE
 
