@@ -7,6 +7,9 @@ const DEFAULT_PARKINGS = "103,105,106,108";
 const REFRESH_INTERVAL = 60000;
 const THRESHOLD_RED = 90;
 const THRESHOLD_ORANGE = 50;
+// badge becomes gray, if timestamp is older than THRESHOLD_GRAY in minutes
+const THRESHOLD_GRAY = 10;
+
 
 class ParkingDashboard extends HTMLElement {
     constructor() {
@@ -55,7 +58,7 @@ class ParkingDashboard extends HTMLElement {
         function badgeColor(parking) {
             const parkingDate = new Date(parking.mvalidtime);
             const referenceDate = new Date();
-            referenceDate.setHours(referenceDate.getHours() - 1);
+            referenceDate.setMinutes(referenceDate.getMinutes - THRESHOLD_GRAY);
             if (parkingDate < referenceDate)
                 return 'gray';
             const percentage = Math.floor(parking.mvalue / parking.smetadata.capacity * 100);
