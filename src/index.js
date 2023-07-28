@@ -58,7 +58,7 @@ class ParkingDashboard extends HTMLElement {
         function badgeColor(parking) {
             const parkingDate = new Date(parking.mvalidtime);
             const referenceDate = new Date();
-            referenceDate.setMinutes(referenceDate.getMinutes - THRESHOLD_GRAY);
+            referenceDate.setMinutes(referenceDate.getMinutes() - THRESHOLD_GRAY);
             if (parkingDate < referenceDate)
                 return 'gray';
             const percentage = Math.floor(parking.mvalue / parking.smetadata.capacity * 100);
