@@ -62,9 +62,6 @@ class ParkingDashboard extends HTMLElement {
         }
 
         function createHtml(parkingLots) {
-            console.log("render");
-            console.log(parkingLots);
-
             let html = `
             <style>
                 h1 {
