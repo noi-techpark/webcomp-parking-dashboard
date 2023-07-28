@@ -9,6 +9,8 @@ const THRESHOLD_RED = 90;
 const THRESHOLD_ORANGE = 50;
 // badge becomes gray, if timestamp is older than THRESHOLD_GRAY in minutes
 const THRESHOLD_GRAY = 15;
+const SHOW_TIMESTAMP = false;
+
 
 
 class ParkingDashboard extends HTMLElement {
@@ -43,7 +45,7 @@ class ParkingDashboard extends HTMLElement {
         }
 
         function dateFormat(parking) {
-            if (!parking.mvalidtime) return ''
+            if (!parking.mvalidtime || !SHOW_TIMESTAMP) return ''
             const date = new Date(parking.mvalidtime)
             return `${date.getHours()}:${String('0' + date.getMinutes()).slice(
                 -2
