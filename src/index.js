@@ -14,68 +14,58 @@ class ParkingDashboard extends HTMLElement {
             // the shadow dom from inside this component
         );
 
-    }
 
-    get parkings() {
-        let parkingLots = this.getAttribute("parkings");
+        function getParkings(parkingLots) {
+            // https://mobility.api.opendatahub.com/v2/flat,node/ParkingStation/occupied/latest?where=scode.in.(%22108%22,%22103%22,%22104%22,%22116%22)
+            const api = "https://mobility.api.opendatahub.com";
 
-        // default value
-        parkingLots = parkingLots != null ? parkingLots : "108,103,104,116";
-        // split string
-        parkingLots = parkingLots.split(",");
+            const xhttp = new XMLHttpRequest();
+            const searchString = "scode.in.(" + parkingLots
+                .map(e => `"${encodeURIComponent(e)}"`)
+                .join(',')
+                + ")";
+            xhttp.open("GET", `${api}/v2/flat,node/ParkingStation/occupied/latest?limit=-1&where=${searchString}&origin=webcomp-parking-dashboard`, false)
+            xhttp.send();
+            const json = JSON.parse(xhttp.response);
 
-        // https://mobility.api.opendatahub.com/v2/flat,node/ParkingStation/occupied/latest?where=scode.in.(%22108%22,%22103%22,%22104%22,%22116%22)
-        const api = "https://mobility.api.opendatahub.com";
-
-        const xhttp = new XMLHttpRequest();
-        const searchString = "scode.in.(" + parkingLots
-            .map(e => `"${encodeURIComponent(e)}"`)
-            .join(',')
-            + ")";
-        xhttp.open("GET", `${api}/v2/flat,node/ParkingStation/occupied/latest?limit=-1&where=${searchString}&origin=webcomp-parking-dashboard`, false)
-        xhttp.send();
-        const json = JSON.parse(xhttp.response);
-
-        json.data.sort((a, b) => this.name(a) > this.name(b));
+            json.data.sort((a, b) => name(a) > name(b));
 
 
-        return json.data;
-    }
+            return json.data;
+        }
 
-    dateFormat(parking) {
-        if (!parking.mvalidtime) return ''
-        const date = new Date(parking.mvalidtime)
-        return `${date.getHours()}:${String('0' + date.getMinutes()).slice(
-            -2
-        )}, ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-    }
+        function dateFormat(parking) {
+            if (!parking.mvalidtime) return ''
+            const date = new Date(parking.mvalidtime)
+            return `${date.getHours()}:${String('0' + date.getMinutes()).slice(
+                -2
+            )}, ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+        }
 
-    name(parking) {
-        return parking.sname;
-        // return parking.smetadata.standard_name ? parking.smetadata.standard_name.replace("Parcheggio ", "") : parking.sname;
-    }
+        function name(parking) {
+            return parking.sname;
+            // return parking.smetadata.standard_name ? parking.smetadata.standard_name.replace("Parcheggio ", "") : parking.sname;
+        }
 
-    badgeColor(parking) {
-        const parkingDate = new Date(parking.mvalidtime);
-        const referenceDate = new Date();
-        referenceDate.setHours(referenceDate.getHours() - 1);
-        if (parkingDate < referenceDate)
-            return 'gray';
-        const percentage = Math.floor(parking.mvalue / parking.smetadata.capacity * 100);
-        if (percentage >= 90)
-            return 'red';
-        if (percentage >= 50)
-            return 'orange';
-        return 'green';
-    }
+        function badgeColor(parking) {
+            const parkingDate = new Date(parking.mvalidtime);
+            const referenceDate = new Date();
+            referenceDate.setHours(referenceDate.getHours() - 1);
+            if (parkingDate < referenceDate)
+                return 'gray';
+            const percentage = Math.floor(parking.mvalue / parking.smetadata.capacity * 100);
+            if (percentage >= 90)
+                return 'red';
+            if (percentage >= 50)
+                return 'orange';
+            return 'green';
+        }
 
-    connectedCallback() {
-        this.render();
-    }
+        function createHtml(parkingLots) {
+            console.log("render");
+            console.log(parkingLots);
 
-    render() {
-        console.log("render");
-        this.shadow.innerHTML = `
+            let html = `
             <style>
                 h1 {
                     color: black;
@@ -157,30 +147,52 @@ class ParkingDashboard extends HTMLElement {
         `;
 
 
-        let cards = "";
+            let cards = "";
 
-        for (let parking of this.parkings) {
-            cards += `
+            for (let parking of getParkings(parkingLots)) {
+                cards += `
                 <div class="card">
-                    <div class="badge ${this.badgeColor(parking)}">
+                    <div class="badge ${badgeColor(parking)}">
                         <div class="percentage">${Math.floor(parking.mvalue / parking.smetadata.capacity * 100)}%</div>
                         <div class="capacity">${parking.mvalue} / ${parking.smetadata.capacity}</div>
                     </div>
                     <div class="detail">
-                        <div class="name">${this.name(parking)}</div>
-                        <div>${this.dateFormat(parking)}</div>
+                        <div class="name">${name(parking)}</div>
+                        <div>${dateFormat(parking)}</div>
                     </div>
                 </div>
         `;
-        }
+            }
 
-        this.shadow.innerHTML += `
+            html += `
             <div class="container">
             ${cards}
             </div>
         `;
 
+            return html;
+        }
+
+        function render(parkingLots, shadow) {
+            shadow.innerHTML = createHtml(parkingLots)
+        }
+
+        // this calls and all above functions need to be inside constructor, to be abel to call setInterval
+        render(this.parkings, this.shadow)
+        setInterval(render, 60000, this.parkings, this.shadow);
     }
+
+    // this function needs tto be outside constructor to be able to access getAttributes
+    get parkings() {
+        let parkingLots = this.getAttribute("parkings");
+
+        // default value
+        parkingLots = parkingLots != null ? parkingLots : "108,103,104,116";
+        // split string
+        parkingLots = parkingLots.split(",");
+        return parkingLots;
+    }
+
 }
 
 customElements.define('parking-dashboard', ParkingDashboard);
