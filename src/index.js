@@ -2,10 +2,15 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+// easy configuration
+const DEFAULT_PARKINGS = "103,105,106,108";
+const REFRESH_INTERVAL = 60000;
+const THRESHOLD_RED = 90;
+const THRESHOLD_ORANGE = 50;
+
 class ParkingDashboard extends HTMLElement {
     constructor() {
         super();
-
         // We need an encapsulation of our component to not
         // interfer with the host, nor be vulnerable to outside
         // changes --> Solution = SHADOW DOM
@@ -54,9 +59,9 @@ class ParkingDashboard extends HTMLElement {
             if (parkingDate < referenceDate)
                 return 'gray';
             const percentage = Math.floor(parking.mvalue / parking.smetadata.capacity * 100);
-            if (percentage >= 90)
+            if (percentage >= THRESHOLD_RED)
                 return 'red';
-            if (percentage >= 50)
+            if (percentage >= THRESHOLD_ORANGE)
                 return 'orange';
             return 'green';
         }
@@ -176,7 +181,7 @@ class ParkingDashboard extends HTMLElement {
 
         // this calls and all above functions need to be inside constructor, to be abel to call setInterval
         render(this.parkings, this.shadow)
-        setInterval(render, 60000, this.parkings, this.shadow);
+        setInterval(render, REFRESH_INTERVAL, this.parkings, this.shadow);
     }
 
     // this function needs tto be outside constructor to be able to access getAttributes
@@ -184,7 +189,7 @@ class ParkingDashboard extends HTMLElement {
         let parkingLots = this.getAttribute("parkings");
 
         // default value
-        parkingLots = parkingLots != null ? parkingLots : "108,103,104,116";
+        parkingLots = parkingLots != null ? parkingLots : DEFAULT_PARKINGS;
         // split string
         parkingLots = parkingLots.split(",");
         return parkingLots;
