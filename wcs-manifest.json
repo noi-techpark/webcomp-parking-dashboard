@@ -22,7 +22,11 @@
     }
   ],
   "image": "wcs-logo.png",
-  "searchTags": [],
+  "searchTags": [
+    "dashboard",
+    "mobility",
+    "real time"
+  ],
   "dist": {
     "basePath": "dist",
     "files": [
