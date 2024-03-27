@@ -5,7 +5,7 @@
 // easy configuration
 const DEFAULT_PARKINGS = "103,104,105,106";
 const REFRESH_INTERVAL = 60000;
-const THRESHOLD_RED = 90;
+const THRESHOLD_RED = 80;
 const THRESHOLD_ORANGE = 50;
 // badge becomes gray, if timestamp is older than THRESHOLD_GRAY in minutes
 const THRESHOLD_GRAY = 15;
