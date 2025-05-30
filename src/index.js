@@ -38,7 +38,13 @@ class ParkingDashboard extends HTMLElement {
             xhttp.send();
             const json = JSON.parse(xhttp.response);
 
-            json.data.sort((a, b) => name(a) > name(b));
+            json.data
+                .filter(item => {
+                const ts = item._timestamp;
+                if (!ts) return false; // skip if no timestamp
+                return !isOlderThanOneMonth(ts);
+              })
+              .sort((a, b) => name(a) > name(b));
 
 
             return json.data;
@@ -51,6 +57,32 @@ class ParkingDashboard extends HTMLElement {
                 -2
             )}, ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
         }
+
+        function isOlderThanOneMonth(input) {
+            let normalized;
+          
+            // Normalize input: replace space with 'T'
+            if (input.includes('+')) {
+              // Format: 2021-12-26 07:05:03.000+0000
+              // Turn into ISO 8601: 2021-12-26T07:05:03.000+00:00
+              normalized = input
+                .replace(' ', 'T')
+                .replace(/([+-]\d{2})(\d{2})$/, '$1:$2'); // +0000 → +00:00
+            } else {
+              // Format: 2021-12-26 07:05:03.000
+              normalized = input.replace(' ', 'T');
+            }
+          
+            const parsedDate = new Date(normalized);
+            if (isNaN(parsedDate)) {
+              throw new Error(`Invalid date format: ${input}`);
+            }
+          
+            const oneMonthAgo = new Date();
+            oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+          
+            return parsedDate < oneMonthAgo;
+          }
 
         function name(parking) {
             return parking.sname;
