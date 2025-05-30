@@ -38,7 +38,7 @@ class ParkingDashboard extends HTMLElement {
             xhttp.send();
             const json = JSON.parse(xhttp.response);
 
-            json.data
+            return json.data
                 .filter(item => {
                 const ts = item._timestamp;
                 if (!ts) return false; // skip if no timestamp
@@ -47,7 +47,6 @@ class ParkingDashboard extends HTMLElement {
               .sort((a, b) => name(a) > name(b));
 
 
-            return json.data;
         }
 
         function dateFormat(parking) {
