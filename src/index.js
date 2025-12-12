@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 // easy configuration
-const DEFAULT_PARKINGS = "103,104,105,106";
+const DEFAULT_PARKINGS = "103,104,105,106,609883_0,108";
 const REFRESH_INTERVAL = 60000;
 const THRESHOLD_RED = 90;
 const THRESHOLD_ORANGE = 50;

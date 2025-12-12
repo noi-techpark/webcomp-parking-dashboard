@@ -44,7 +44,7 @@
         "label": "Comma separated scode list taken from https://mobility.api.opendatahub.com/v2/flat,node/ParkingStation?select=sname,scode",
         "required": false,
         "options": {
-          "default": "103,104,105,106,609883_0"
+          "default": "103,104,105,106,609883_0,108"
         }
       }
     ]

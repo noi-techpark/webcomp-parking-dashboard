@@ -50,7 +50,7 @@ Include the webcompscript file `dist/webcomp-parking-dashboard.min.js` in your H
 Comma separated scode list taken from https://mobility.api.opendatahub.com/v2/flat,node/ParkingStation?select=sname,scode
 
 Type: string
-Default: "108,103,104,116"
+Default: "103,104,105,106,609883_0,108"
 
 ## Getting started
 
